@@ -11,7 +11,8 @@
    [fuel_requirements,
     program_alarm_1202,
     wires,
-    container
+    container,
+    thermal_code
    ]},
 
   {licenses, ["Apache 2.0"]},
