@@ -1,6 +1,6 @@
 -module(intcode).
 -export([intcode_from_file/1, run_intcode/1, set_input/2, add_input/2,
-         pop_all_output/1]).
+         pop_all_output/1, get_instruction/2, set_instruction/3]).
 
 -type intcode_status() :: ready | blocked | halted.
 
@@ -55,6 +55,14 @@ run_intcode(#intcode{status=Status}) ->
 -spec pop_all_output(intcode()) -> {[integer()], intcode()}.
 pop_all_output(I=#intcode{output=Output}) ->
     {Output, I#intcode{output=[]}}.
+
+-spec get_instruction(non_neg_integer(), intcode()) -> integer().
+get_instruction(Idx, #intcode{instructions=Instructions}) ->
+    array:get(Idx, Instructions).
+
+-spec set_instruction(non_neg_integer(), integer(), intcode()) -> intcode().
+set_instruction(Idx, Val, I=#intcode{instructions=Instructions}) ->
+    I#intcode{instructions=array:set(Idx, Val, Instructions)}.
 
 add(X, Y) -> X + Y.
 
@@ -161,7 +169,7 @@ process_instructions(Input, Output, Instructions, IP, OldOutput) ->
                 end,
             process_instructions(Input, Output, I, IP+4, OldOutput);
         99 ->
-            {ok, #intcode{instructions=Instruction,
+            {ok, #intcode{instructions=Instructions,
                           pointer=IP,
                           status=halted,
                           input=Input,
