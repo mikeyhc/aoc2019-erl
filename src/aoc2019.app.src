@@ -16,7 +16,8 @@
     orbits,
     auxilliary,
     intcode,
-    space_image
+    space_image,
+    boost
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
