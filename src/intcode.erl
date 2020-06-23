@@ -1,6 +1,7 @@
 -module(intcode).
 -export([intcode_from_file/1, run_intcode/1, set_input/2, add_input/2,
-         pop_all_output/1, get_instruction/2, set_instruction/3]).
+         pop_all_output/1, get_instruction/2, set_instruction/3,
+         intcode_status/1]).
 
 -type intcode_status() :: ready | blocked | halted.
 
@@ -32,6 +33,10 @@ read_parts(Filename) ->
     Lines = string:split(List, ",", all),
     lists:filter(fun(X) -> X =/= "" end, Lines).
 
+-spec intcode_status(intcode()) -> intcode_status().
+intcode_status(#intcode{status=Status}) ->
+    Status.
+
 -spec add_input(integer() | [integer()], intcode()) -> intcode().
 add_input(NewInput, I=#intcode{input=Input}) when is_list(NewInput) ->
     I#intcode{input=Input ++ NewInput};
@@ -43,14 +48,16 @@ set_input(Input, Intcode) ->
     Intcode#intcode{input=Input}.
 
 -spec run_intcode(intcode()) -> {ok, intcode()} | {status, intcode_status()}.
-run_intcode(Intcode=#intcode{status=ready}) ->
+run_intcode(#intcode{status=blocked, input=[]}) ->
+    {status, blocked};
+run_intcode(#intcode{status=halted}) ->
+    {status, halted};
+run_intcode(Intcode) ->
     #intcode{instructions=Instructions,
              input=Input,
              pointer=IP,
              output=Output} = Intcode,
-    process_instructions(Input, [], Instructions, IP, Output);
-run_intcode(#intcode{status=Status}) ->
-    {status, Status}.
+    process_instructions(Input, [], Instructions, IP, Output).
 
 -spec pop_all_output(intcode()) -> {[integer()], intcode()}.
 pop_all_output(I=#intcode{output=Output}) ->
@@ -121,9 +128,18 @@ process_instructions(Input, Output, Instructions, IP, OldOutput) ->
             process_instructions(Input, Output, I, IP+4, OldOutput);
         3 ->
             % save input
-            [H|T] = Input,
-            I = array:set(array:get(IP+1, Instructions), H, Instructions),
-            process_instructions(T, Output, I, IP+2, OldOutput);
+            case Input of
+                [] ->
+                    {ok, #intcode{instructions=Instructions,
+                                  pointer=IP,
+                                  status=blocked,
+                                  input=[],
+                                  output=lists:reverse(Output) ++ OldOutput}};
+                [H|T] ->
+                    I = array:set(array:get(IP+1, Instructions), H,
+                                  Instructions),
+                    process_instructions(T, Output, I, IP+2, OldOutput)
+            end;
         4 ->
             % write to output
             O = op_value(IP+1, Op1Mode, Instructions),
