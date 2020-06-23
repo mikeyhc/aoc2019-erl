@@ -15,7 +15,8 @@
     thermal_code,
     orbits,
     auxilliary,
-    intcode
+    intcode,
+    space_image
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
