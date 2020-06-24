@@ -18,7 +18,8 @@
     intcode,
     space_image,
     boost,
-    asteroids
+    asteroids,
+    painting_robot
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}

@@ -1,7 +1,7 @@
 -module(intcode).
 -export([intcode_from_file/1, run_intcode/1, set_input/2, add_input/2,
          pop_all_output/1, get_instruction/2, set_instruction/3,
-         intcode_status/1, intcode_from_list/1]).
+         intcode_status/1, intcode_from_list/1, pop_output/1]).
 
 -type intcode_status() :: ready | blocked | halted.
 
@@ -69,6 +69,11 @@ run_intcode(Intcode) ->
 -spec pop_all_output(intcode()) -> {[integer()], intcode()}.
 pop_all_output(I=#intcode{output=Output}) ->
     {Output, I#intcode{output=[]}}.
+
+-spec pop_output(intcode()) -> {integer() | undefined, intcode()}.
+pop_output(I=#intcode{output=[]}) -> {undefined, I};
+pop_output(I=#intcode{output=[H|T]}) ->
+    {H, I#intcode{output=T}}.
 
 -spec get_instruction(non_neg_integer(), intcode()) -> integer().
 get_instruction(Idx, #intcode{instructions=Instructions}) ->
