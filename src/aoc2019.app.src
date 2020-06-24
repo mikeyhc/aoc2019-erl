@@ -17,7 +17,8 @@
     auxilliary,
     intcode,
     space_image,
-    boost
+    boost,
+    asteroids
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
