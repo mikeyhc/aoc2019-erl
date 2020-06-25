@@ -20,7 +20,8 @@
     boost,
     asteroids,
     painting_robot,
-    moons
+    moons,
+    arcade
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
