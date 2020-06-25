@@ -19,7 +19,8 @@
     space_image,
     boost,
     asteroids,
-    painting_robot
+    painting_robot,
+    moons
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
