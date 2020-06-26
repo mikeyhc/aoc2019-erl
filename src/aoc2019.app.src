@@ -21,7 +21,8 @@
     asteroids,
     painting_robot,
     moons,
-    arcade
+    arcade,
+    ore
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
