@@ -22,7 +22,8 @@
     painting_robot,
     moons,
     arcade,
-    ore
+    ore,
+    repair_robot
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
