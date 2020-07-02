@@ -23,7 +23,8 @@
     moons,
     arcade,
     ore,
-    repair_robot
+    repair_robot,
+    fft
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}
