@@ -83,8 +83,6 @@ oxygen_spread(Map) ->
 oxygen_spread_([], Steps, Map) -> {Steps - 1, Map};
 oxygen_spread_(EdgeSet, Steps, Map0) ->
     Map1 = lists:foldl(fun(K, M) -> maps:update(K, 4, M) end, Map0, EdgeSet),
-    % draw_map(Map1),
-    % timer:sleep(1000),
     F = fun(X) -> maps:get(X, Map1, 0) =:= 1 end,
     Neighbours = lists:map(fun get_neighbours/1, EdgeSet),
     AllNeighbours = sets:union(Neighbours),
