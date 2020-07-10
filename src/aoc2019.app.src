@@ -24,7 +24,8 @@
     arcade,
     ore,
     repair_robot,
-    fft
+    fft,
+    ascii
    ]},
   {licenses, ["Apache 2.0"]},
   {links, []}

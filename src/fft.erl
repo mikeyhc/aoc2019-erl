@@ -1,8 +1,6 @@
 -module(fft).
 
--export([decode/2, decode/3]).
-
--compile(export_all).
+-export([input_from_file/1, decode/2, decode/3]).
 
 input_from_file(Filename) ->
     {ok, Bin} = file:read_file(Filename),
